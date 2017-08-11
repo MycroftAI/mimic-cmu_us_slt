@@ -51,17 +51,7 @@ config_h = configure_file(output : 'mimic_@0@_config.h'.format(voice_name),
 
 sources += [config_h]
 
-# Static map file
-mapfile = 'ttsmimic_@0@.map'.format(voice_name)
-vflag = []
-if c_compiler.has_argument('-Wl,--version-script,')
-  vflag += ['-Wl,--version-script,@0@/@1@'.format(meson.current_source_dir(), mapfile)]
-else
-  message('Cannot use a symbol map file')
-endif
-
 voice_lib = library('ttsmimic_@0@'.format(voice_name), sources,
-                    link_args : vflag, link_depends : mapfile,
                     include_directories : includes,
                     dependencies: [mimicenglish, mimiccore],
                     install: true)
