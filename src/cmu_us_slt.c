@@ -38,7 +38,6 @@
 /*                                                                       */
 /*************************************************************************/
 
-#include "config.h"
 #include <string.h>
 #include "mimic.h"
 #include "cst_cg.h"
@@ -104,10 +103,4 @@ void voice_cmu_us_slt_plugin_init()
 void voice_cmu_us_slt_plugin_exit()
 {
 }
-
-#ifdef MIMIC_ENABLE_PLUGINS
-#include "cst_plugins.h"
-
-mimic_plugin_t mimic_plugin = { "voice_cmu_us_slt", 0, &voice_cmu_us_slt_plugin_init, &voice_cmu_us_slt_plugin_exit};
-#endif
 
