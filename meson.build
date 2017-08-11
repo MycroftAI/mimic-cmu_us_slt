@@ -1,6 +1,8 @@
 project('mimic-cmu_us_slt', 'c', default_options : ['c_std=c99'], version: '0')
 voice_name = 'cmu_us_slt'
 
+c_compiler = meson.get_compiler('c')
+
 build_plugin = get_option('plugin')
 
 sources = [
@@ -51,8 +53,12 @@ sources += [config_h]
 
 # Static map file
 mapfile = 'ttsmimic_@0@.map'.format(voice_name)
-vflag = '-Wl,--version-script,@0@/@1@'.format(meson.current_source_dir(), mapfile)
-
+vflag = []
+if c_compiler.has_argument('-Wl,--version-script,')
+  vflag += ['-Wl,--version-script,@0@/@1@'.format(meson.current_source_dir(), mapfile)]
+else
+  message('Cannot use a symbol map file')
+endif
 
 voice_lib = library('ttsmimic_@0@'.format(voice_name), sources,
                     link_args : vflag, link_depends : mapfile,
