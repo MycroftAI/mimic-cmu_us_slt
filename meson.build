@@ -1,8 +1,6 @@
 project('mimic-cmu_us_slt', 'c', default_options : ['c_std=c99'], version: '0')
 voice_name = 'cmu_us_slt'
 
-c_compiler = meson.get_compiler('c')
-
 build_plugin = get_option('plugin')
 
 sources = [
@@ -24,20 +22,19 @@ sources = [
   'src/voxdefs.h'
 ]
 
-en_us_header_subdir = join_paths('ttsmimic', 'lang', 'en_US')
 includes = [include_directories('include')]
 
 # Core Dependency:
-mimiccore = dependency('ttsmimiccore', static: true)
+mimiccore = dependency('ttsmimic_core')
 mimic_plugin_dir = mimiccore.get_pkgconfig_variable('mimic_plugin_dir')
-mimicenglish = dependency('ttsmimicenglish', static: true)
+mimicenglish = dependency('ttsmimic_english')
 
 # If mimic-core does not have plugin support, disable the plugin
 if mimic_plugin_dir == ''
   build_plugin = false
 endif
 
-message('Build mimic-cmu_us_slt plugin: @0@'.format(build_plugin))
+message('Build mimic-@0@ plugin: @1@'.format(voice_name, build_plugin))
 
 
 en_us_header_subdir = join_paths('ttsmimic', 'lang', 'en_US')
@@ -90,7 +87,7 @@ pkg = import('pkgconfig')
 pkg.generate(libraries : voice_lib,
              name : 'ttsmimic_@0@'.format(voice_name),
              subdirs: en_us_header_subdir,
-             requires: ['ttsmimicenglish', 'ttsmimiccore'],
+             requires: ['ttsmimic_english', 'ttsmimic_core'],
              description: '@0@ support for text to speech synthesis in mimic.'.format(voice_name),
              version: meson.project_version())
 
