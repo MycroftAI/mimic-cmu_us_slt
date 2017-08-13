@@ -22,7 +22,7 @@ sources = [
   'src/voxdefs.h'
 ]
 
-includes = [include_directories('include')]
+includes = [include_directories('include'), include_directories('.')]
 
 # English Dependency:
 mimicenglish = dependency('ttsmimic_english', required: false)
